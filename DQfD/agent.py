@@ -200,24 +200,19 @@ class DQfDAgent(object):
                 self.q_target.load_state_dict(self.q.state_dict())
 
     def train(self):
-        ###### 1. DO NOT MODIFY FOR TESTING ######
         test_mean_episode_reward = deque(maxlen=20)
         test_over_reward = False
         test_min_episode = np.inf
         ret_reward = []
-        ###### 1. DO NOT MODIFY FOR TESTING ######
 
         # Do pretrain
         self.pretrain()
-        ## TODO
 
         self.optimizer = torch.optim.Adam(self.q.parameters(), lr=0.00001, weight_decay=0.00001)
 
         for e in range(self.n_EPISODES):
 
-            ########### 2. DO NOT MODIFY FOR TESTING ###########
             test_episode_reward = 0
-            ########### 2. DO NOT MODIFY FOR TESTING  ###########
 
             ## TODO
             done = False
@@ -229,9 +224,7 @@ class DQfDAgent(object):
                 ## TODO
                 next_state, reward, done, _ = self.env.step(action)
 
-                ########### 3. DO NOT MODIFY FOR TESTING ###########
                 test_episode_reward += reward
-                ########### 3. DO NOT MODIFY FOR TESTING  ###########
 
                 ## TODO
                 buf_input = state, action, next_state, reward, done
@@ -263,27 +256,17 @@ class DQfDAgent(object):
                 state = next_state
 
                 # s, a, r, n_s, d, n_n_s, sum_r, n_d
-                ########### 4. DO NOT MODIFY FOR TESTING  ###########
                 if done:
                     test_mean_episode_reward.append(test_episode_reward)
                     if (np.mean(test_mean_episode_reward) > 475) and (len(test_mean_episode_reward) == 20):
                         test_over_reward = True
                         test_min_episode = e
-                    ########### 4. DO NOT MODIFY FOR TESTING  ###########
                     ret_reward.append(test_episode_reward)
                     if self.replay_buffer.size() > 100:
                         self.agent_train()
-                ## TODO
 
-            ########### 5. DO NOT MODIFY FOR TESTING  ###########
             if test_over_reward:
                 print("END train function")
                 break
-            ########### 5. DO NOT MODIFY FOR TESTING  ###########
 
-            ## TODO
-
-        ########### 6. DO NOT MODIFY FOR TESTING  ###########
         return test_min_episode, np.mean(test_mean_episode_reward)#, ret_reward
-        ########### 6. DO NOT MODIFY FOR TESTING  ###########
-
